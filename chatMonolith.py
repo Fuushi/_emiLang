@@ -7,7 +7,7 @@ from dotenv import load_dotenv, dotenv_values
 load_dotenv()
 
 ##main thread loop
-def thread(): ##should have 2 pipes, one for inference one for interactions
+def thread(interactions_conn, inference_conn): ##should have 2 pipes, one for inference one for interactions
 
     while True:
 

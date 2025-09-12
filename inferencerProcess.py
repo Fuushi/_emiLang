@@ -2,13 +2,13 @@ import os, sys, time
 from multiprocessing import Process,Pipe
 
 from dotenv import load_dotenv, dotenv_values
-load_dotenv()
+load_dotenv(dotenv_path=os.path.join(os.getcwd(), ".env"), override=True)
 
 #inference related includes
 from openai import OpenAI
 
 ##initialize objects
-client = OpenAI()# TODO key=dotenv()
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
 ##helper funcions
@@ -31,12 +31,22 @@ def inference():
 
 
 def thread(child_conn):
+    ## thread event loop, calls inference
+    print("Connected to OpenAI")
+
+    #
+    while True:
+        
+        #check pipe
+        if child_conn.poll():
+            data = child_conn.recv()
+
+            #data is to be stored in a struct
+            print(data)
+
+        time.sleep(0.5)
+        #print("i-loop")
     
     return ##do not return
 
-
-##debug main
-inference()
-
-
-##implement openai backend first
+##implement openai backend first, then local api

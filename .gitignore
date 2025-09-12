@@ -34,3 +34,6 @@ coverage/
 *.swp
 *.bak
 *.tmp
+
+# Caches
+__pycache__/

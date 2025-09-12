@@ -21,7 +21,7 @@ def thread(child_conn):
         while True:
             await asyncio.sleep(0.5)
             
-            print("t-eLoop")
+            #print("t-eLoop")
 
     @client.event
     async def on_message(message):

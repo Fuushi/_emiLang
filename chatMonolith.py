@@ -12,6 +12,11 @@ def thread(interactions_conn, inference_conn): ##should have 2 pipes, one for in
     while True:
 
         ##poll interactions for new messages
+        if interactions_conn.poll():
+
+            data = interactions_conn.recv()
+
+            print(data)
 
         ##load relavent context, scope, curriculum
 

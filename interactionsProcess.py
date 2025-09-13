@@ -13,7 +13,7 @@ import asyncio
 async def get_history(channel) -> list:
     #returns array of dict
     history = []
-    async for msg in channel.history(limit=20):
+    async for msg in channel.history(limit=10):
         history.append({
             "author": str(msg.author),
             "content": msg.content,
@@ -32,13 +32,25 @@ def thread(child_conn):
         global state
         print("Connected to Discord")
         while True:
+
+            if child_conn.poll():
+
+                data = child_conn.recv()
+
+                print(f"data recieved at interactions: sending to {data.channel}")
+
+                channel = client.get_channel(int(data.channel))
+                await channel.send(data.content)
+
             await asyncio.sleep(0.5)
-            
-            #print("t-eLoop")
+
 
     @client.event
     async def on_message(message):
         #print(message, "\n", dir(message))
+
+        if message.author.id == 1152264823271329822:
+            return
 
         ##pack struct
         mStruct = structs.inMessage(

@@ -7,27 +7,27 @@ load_dotenv(dotenv_path=os.path.join(os.getcwd(), ".env"), override=True)
 #inference related includes
 from openai import OpenAI
 
+import structs
+
 ##initialize objects
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
 ##helper funcions
-def inference():
+def inference(ctx):
     ##example request
     
     print("----- standard request -----")
     completion = client.chat.completions.create(
         model="gpt-5-nano",
-        messages=[
-            {
-                "role": "user",
-                "content": "Say this is a test",
-            },
-        ],
+        messages=ctx,
     )
     print(completion.choices[0].message.content)
 
-    return
+    return {
+        "author" : "Assistant",
+        "content" : completion.choices[0].message.content
+    }
 
 
 def thread(child_conn):
@@ -42,7 +42,14 @@ def thread(child_conn):
             data = child_conn.recv()
 
             #data is to be stored in a struct
-            print(data)
+            print(f"DATA RECIEVED AT INFERENCER {data}")
+
+            #run inference
+            model_response_packet = inference(data.get_ctx())
+            
+            #pipe data back
+            child_conn.send(model_response_packet)
+            
 
         time.sleep(0.5)
         #print("i-loop")

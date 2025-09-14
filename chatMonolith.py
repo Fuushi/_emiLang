@@ -1,7 +1,7 @@
 TIMEOUT=60
 
 
-import os, sys, time
+import os, sys, time, json
 
 #multiprocessing
 from multiprocessing import Process,Pipe
@@ -11,6 +11,9 @@ load_dotenv()
 
 import structs
 
+#load persona
+with open("./personas/persona.json", "r") as fp: persona = json.loads(fp.read())
+
 ##main thread loop
 def thread(interactions_conn, inference_conn): ##should have 2 pipes, one for inference one for interactions
 
@@ -19,16 +22,15 @@ def thread(interactions_conn, inference_conn): ##should have 2 pipes, one for in
         ##poll interactions for new messages
         if interactions_conn.poll():
 
-            data = interactions_conn.recv()
+            userMessage = interactions_conn.recv()
 
-            print(data)
+            print(userMessage)
 
             ##load relavent context, scope, curriculum
                 #TODO
 
-            ##build context
-            ##implicit constructor when creating context struct?
-            ctx=structs.Context(data.preload_history)
+            ##build context object (needs to be processed to get rich context before inference)
+            ctx=structs.Context(userMessage.preload_history, system=persona['persona']['systemPrompt'])
 
             ##pipe to and from interencer
                 #pipe to
@@ -52,12 +54,17 @@ def thread(interactions_conn, inference_conn): ##should have 2 pipes, one for in
             print(inferenceResp)
 
             #pack outMessage
-            modelMessage = structs.outMessage(
-                id=None,
-                channel=data.channel,
-                guild=data.guild,
-                content = inferenceResp['content'],
-                media=[]
+            modelMessage = structs.inMessage(
+                id=int(time.time()),
+                author=1152264823271329822,
+                author_name='Emi AI#8362',
+                channel=userMessage.channel,
+                channel_name=userMessage.channel_name,
+                guild=userMessage.guild,
+                guild_name=userMessage.guild_name,
+                content=inferenceResp['content'],
+                dob=time.time(),
+                preload_history=[]
             )
 
             ##(possible executive function clause here)
@@ -67,7 +74,7 @@ def thread(interactions_conn, inference_conn): ##should have 2 pipes, one for in
 
             ##finish up
 
-        time.sleep(1)
+        time.sleep(0.3)
 
         ##if no messages were sent, possible executive function or sleep review
 

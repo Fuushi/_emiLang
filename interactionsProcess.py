@@ -27,6 +27,7 @@ def thread(child_conn):
     intents = discord.Intents.all()
     client = discord.Client(intents=intents)
 
+    #task loop
     @client.event
     async def on_ready():
         global state
@@ -36,15 +37,18 @@ def thread(child_conn):
             if child_conn.poll():
 
                 data = child_conn.recv()
+                
+                if (not data):
+                    print("An unknown error has occured, nonetype?")
+                    continue
 
-                print(f"data recieved at interactions: sending to {data.channel}")
-
+                #TODO break up large messages
                 channel = client.get_channel(int(data.channel))
                 await channel.send(data.content)
 
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.3)
 
-
+    #on message handler
     @client.event
     async def on_message(message):
         #print(message, "\n", dir(message))

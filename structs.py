@@ -2,6 +2,7 @@ import time
 
 ##This file contains commonly used structs for passing data between process(s)
 
+#the primary struct for interactions messages contains all scoping info
 class inMessage:
     def __init__(self,
         id : int,
@@ -47,11 +48,14 @@ class outMessage:
         return
     
 class Context:
+    #CONTEXT IS CHANNEL SPECIFIC
     def __init__(self,
-        array : list
+        array : list,
+        system : dict = None
         ):
         ##stores an array of dictionaries sorted oldest to newest
         self.raw_ctx=array[::-1]
+        self.system=system
 
         return
 
@@ -72,9 +76,11 @@ class Context:
             )
 
             if i >= limit:
+                if self.system: ret.append(self.system)
                 return ret[::-1]
             
             i+=1
 
+        if self.system: ret.append(self.system)
         return ret[::-1]
         

@@ -30,7 +30,7 @@ def main():
     while True:
         #threads can be managed here if needed (main has to be alive to kill daemons)
         #print("t-main")
-        time.sleep(0.2)
+        time.sleep(0.3)
 
     return
 

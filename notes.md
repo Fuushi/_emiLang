@@ -20,3 +20,10 @@ max_ctx=4,196 #2**12
 ctx=[
 
 ]
+
+
+
+
+
+:::CONFIG NOTES:::
+default-heartbeat = f0.3s

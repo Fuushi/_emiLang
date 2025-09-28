@@ -84,3 +84,20 @@ class Context:
         if self.system: ret.append(self.system)
         return ret[::-1]
         
+class Ticket:
+    def __init__(self,
+        id, #clone spawn message ID?
+        author,
+        channel,
+        guild,
+        dob,
+        content_TEMP=None,
+        ):
+        self.id=id
+        self.author=author
+        self.channel=channel
+        self.guild=guild
+        self.dob=dob
+        #CONTENT_TEMP (only if needs to be cached)
+
+        return

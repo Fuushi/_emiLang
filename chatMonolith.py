@@ -55,7 +55,7 @@ def thread(interactions_conn, inference_conn): ##should have 2 pipes, one for in
 
             #pack outMessage
             modelMessage = structs.inMessage(
-                id=int(time.time()),
+                id=userMessage.id,
                 author=1152264823271329822,
                 author_name='Emi AI#8362',
                 channel=userMessage.channel,

@@ -25,7 +25,7 @@ def inference(ctx):
     #messy debug config
     if config['skip_inference'] == True: return {"author":"Assistant","content":"INFERENCE-DISABLED-FOR-DEBUG"}
     
-    print("----- standard request -----")
+    #print("----- standard request -----")
     completion = client.chat.completions.create(
         model="gpt-5-nano",
         messages=ctx,

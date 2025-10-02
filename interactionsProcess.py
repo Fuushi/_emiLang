@@ -142,7 +142,11 @@ def thread(child_conn):
             dob=time.time(),
             preload_history = await get_history(message.channel) #really messy
         )
-        
+
+        #verbose logs
+        log_line = f"[{mStruct.dob}][{mStruct.channel}] spawnID: {mStruct.id}"
+        print(log_line)
+
         #send struct to monolith and return
         child_conn.send(
             mStruct

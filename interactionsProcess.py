@@ -10,7 +10,6 @@ import discord
 from discord import Intents
 import asyncio
 
-<<<<<<< HEAD
 async def send_as_segments(channel, message):
     segments = [message[i:i+2000] for i in range(0, len(message), 2000)]
     
@@ -27,7 +26,8 @@ async def send_as_segments(channel, message):
         i+=1
 
     return
-=======
+
+#TODO move into structs
 ##local state class
 class State:
     def __init__(self):
@@ -57,7 +57,6 @@ class State:
         return
 
 state = State()
->>>>>>> 6d9a5f6873b3802ae575408cb206857d8eca20db
 
 async def get_history(channel) -> list:
     #returns array of dict
@@ -92,26 +91,17 @@ def thread(child_conn):
                     print("An unknown error has occured, nonetype?")
                     continue
 
-<<<<<<< HEAD
-                #send message segment
-                channel = client.get_channel(int(data.channel)) #TODO hyphenate broken text and come up with solution for large tables
+                #send message segments
+                channel = client.get_channel(int(data.channel))
                 await send_as_segments(channel, data.content)
-=======
+
                 #find ticket (checkout)
                 ticket = state.getTicket(data.id)
                 if not ticket:
                     print("TICKET NOT FOUND, timeout?")
 
-                #TODO break up large messages
-                channel = client.get_channel(int(data.channel))
-                await channel.send(data.content)
->>>>>>> 6d9a5f6873b3802ae575408cb206857d8eca20db
-
                 ##close ticket
                 state.closeTicket(data.id)
-
-                #debug
-                print(len(state.tickets))
 
             #check tickets for typing indicator
             for ticket in state.tickets:
@@ -152,9 +142,7 @@ def thread(child_conn):
             dob=time.time(),
             preload_history = await get_history(message.channel) #really messy
         )
-
-        print(mStruct)
-
+        
         #send struct to monolith and return
         child_conn.send(
             mStruct

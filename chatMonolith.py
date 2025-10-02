@@ -21,9 +21,9 @@ def thread(interactions_conn, inference_conn): ##should have 2 pipes, one for in
         ##poll interactions for new messages
         if interactions_conn.poll():
 
+            #recieve message
             userMessage = interactions_conn.recv()
 
-            print(userMessage)
 
             ##load relavent context, scope, curriculum
                 #TODO
@@ -50,7 +50,7 @@ def thread(interactions_conn, inference_conn): ##should have 2 pipes, one for in
                 print("Inference Timeout")
                 continue
 
-            print(inferenceResp)
+            #print(inferenceResp)
 
             #pack outMessage
             modelMessage = structs.inMessage(

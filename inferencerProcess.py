@@ -30,7 +30,6 @@ def inference(ctx):
         model="gpt-5-nano",
         messages=ctx,
     )
-    print(completion.choices[0].message.content)
 
     return {
         "author" : "Assistant",
@@ -50,7 +49,6 @@ def thread(child_conn):
             data = child_conn.recv()
 
             #data is to be stored in a struct
-            print(f"DATA RECIEVED AT INFERENCER {data}")
 
             #run inference
             model_response_packet = inference(data.get_ctx())

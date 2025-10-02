@@ -11,8 +11,12 @@ from openai import OpenAI
 import structs
 
 ##initialize objects
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 with open("config.json", 'r') as fp: config = json.loads(fp.read())
+client = OpenAI(
+    api_key=os.getenv("OPENAI_API_KEY"),
+    base_url=config['default_base_url']
+)
+
 
 ##helper funcions
 def inference(ctx):

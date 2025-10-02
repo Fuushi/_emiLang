@@ -1,5 +1,3 @@
-TIMEOUT=60
-
 
 import os, sys, time, json
 
@@ -13,6 +11,7 @@ import structs
 
 #load persona
 with open("./personas/persona.json", "r") as fp: persona = json.loads(fp.read())
+with open("config.json", 'r') as fp: config = json.loads(fp.read())
 
 ##main thread loop
 def thread(interactions_conn, inference_conn): ##should have 2 pipes, one for inference one for interactions
@@ -40,10 +39,10 @@ def thread(interactions_conn, inference_conn): ##should have 2 pipes, one for in
             
             sTime=time.time()
             inferenceResp = None
-            while (time.time() - sTime) < TIMEOUT:
+            while (time.time() - sTime) < config['defualt_timeout']:
 
                 if inference_conn.poll():
-                    sTime = sTime - TIMEOUT+10 #worlds worst break 
+                    sTime = sTime - config['defualt_timeout']+10 #worlds worst break 
                     inferenceResp = inference_conn.recv()
 
             if inferenceResp == None:

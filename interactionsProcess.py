@@ -10,6 +10,23 @@ import discord
 from discord import Intents
 import asyncio
 
+async def send_as_segments(channel, message):
+    segments = [message[i:i+2000] for i in range(0, len(message), 2000)]
+    
+    i=0
+    for segment in segments:
+        #hyphenate broken text
+        if i != len(segments)-1: segment = segment+"-"
+
+        #send message segment
+        await channel.send(segment)
+
+        #sleep (can be ignored if last iteration)
+        await asyncio.sleep(0.2)
+        i+=1
+
+    return
+
 async def get_history(channel) -> list:
     #returns array of dict
     history = []
@@ -42,9 +59,9 @@ def thread(child_conn):
                     print("An unknown error has occured, nonetype?")
                     continue
 
-                #TODO break up large messages
-                channel = client.get_channel(int(data.channel))
-                await channel.send(data.content)
+                #send message segment
+                channel = client.get_channel(int(data.channel)) #TODO hyphenate broken text and come up with solution for large tables
+                await send_as_segments(channel, data.content)
 
             await asyncio.sleep(0.3)
 

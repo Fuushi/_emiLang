@@ -1,3 +1,5 @@
 {
-    "skip_inference" : false
+    "skip_inference" : false,
+    "default_base_url" : "http://localhost:1234/v1",
+    "defualt_timeout" : 120
 }
